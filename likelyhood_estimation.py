@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from scipy.optimize import fsolve
 
 from remove_stochastics import RemoveStochastics
+from graphics_drawer import MakeHist, TimesFromEvents
 
 import logging # a workaround to kill warnings
 logging.captureWarnings(True)
@@ -104,6 +105,9 @@ class LikelyhoodEstimationDismembered:
 
         CheckNegativity(all_neutral_events)
         CheckNegativity(all_funct_events)
+
+        MakeHist(TimesFromEvents(all_funct_events, 0), 20)
+        MakeHist(TimesFromEvents(all_funct_events, 1), 20)
 
         if remove_stochastics:
             RemoveStochastics(all_neutral_events, cutoff_for_stochastics)

@@ -31,7 +31,11 @@ class Node:
         self.type = type
 
 nodes_with_data = []
-neutral_forward_mut, neutral_backward_mut, funct_forward_mut, funct_backward_mut = 'C501T', 'T501C', 'C452A', 'A452C'
+neutral_forward_mut, funct_forward_mut = 'C501T', 'C452A'
+
+# backward muts have the same number, but the origin and mutated nucleotyde swap places
+neutral_backward_mut = neutral_forward_mut[-1] + neutral_forward_mut[1:-1]+neutral_forward_mut[0]
+funct_backward_mut = funct_forward_mut[-1] + funct_forward_mut[1:-1]+funct_forward_mut[0]
 muts_list = [neutral_forward_mut, neutral_backward_mut, funct_forward_mut, funct_backward_mut]
 
 file = open("/Users/LAB-SCG-125/Documents/Fitness_data/sample_paths.txt", "r")
