@@ -9,19 +9,17 @@ from tree_class_tree_to_binary import tree_to_binary
 
 import datetime
 
-samples_with_one_mutation = []
+#filename = "/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.txt"
+#file = open(filename, "r")
 
-file = open("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.txt", "r")
+#samples_with_one_mutation = []
+#for line in file:
+#    samples_with_one_mutation.append(line.split()[0])
+#samples_with_one_mutation.remove("sample")
+#file.close()
 
-for line in file:
-    samples_with_one_mutation.append(line.split()[0])
-
-samples_with_one_mutation.remove("sample")
-
-file.close()
-
-for sample_name_num in range(len(samples_with_one_mutation)):
-    samples_with_one_mutation[sample_name_num] = re.split('\|', samples_with_one_mutation[sample_name_num])[0]
+#for sample_name_num in range(len(samples_with_one_mutation)):
+#    samples_with_one_mutation[sample_name_num] = re.split('\|', samples_with_one_mutation[sample_name_num])[0]
 
 class Node:
     def __init__(self, node_id, mutations, time, type):
