@@ -2,8 +2,9 @@ from treelib import Tree
 
 def tree_to_binary(tree):
 
+    print("Started transfer of tree to binary")
+
     for node in tree.all_nodes():
-        node_data = node.data
         num_of_children = len(node.fpointer)
         node_children_list = node.fpointer.copy()
         if num_of_children > 2:
@@ -22,6 +23,8 @@ def tree_to_binary(tree):
                 updated_node_parent_id = 'Dummy' + str(i) + str(node.tag)
                 updated_node_id = 'Dummy' + str(i+1) + str(node.tag)
                 tree.move_node(updated_node_id, updated_node_parent_id)
+
+    print("Ended transfer of tree to binary")
 
     return tree
 

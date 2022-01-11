@@ -35,14 +35,14 @@ def MakeTreeClassTree(file_name):
         for child_node in node["children"]:
             add_children(some_tree, child_node)
 
+    print('Started tree building')
     tree_class_tree = Tree()
-    print('STARTED TREE BUILDING')
 
     tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"]) # we build a tree from newick here
     for children_node in raw_nodes["children"]:
         add_children(tree_class_tree, children_node)
 
-    print('ENDED TREE BUILDING')
+    print('Ended tree building')
 
     return tree_class_tree
 
