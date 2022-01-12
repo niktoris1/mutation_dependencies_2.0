@@ -1,10 +1,12 @@
 import matplotlib.pyplot as plt
 
-def MakeHist(data_aray, frequency):
-    data_min = min(data_aray)
-    data_max = max(data_aray)
+def MakeHist(data_array, frequency):
+    if len(data_array) == 0:
+        raise ValueError("There are no suitable events for at least one of the mutations")
+    data_min = min(data_array)
+    data_max = max(data_array)
     bin_borders = [data_min + i * (data_max - data_min) / frequency for i in range(frequency+1)]
-    plt.hist(x=data_aray, bins=bin_borders, alpha=0.7, rwidth=0.85)
+    plt.hist(x=data_array, bins=bin_borders, alpha=0.7, rwidth=0.85)
     plt.show()
 
 def TimesFromEvents(events_list, event_type):

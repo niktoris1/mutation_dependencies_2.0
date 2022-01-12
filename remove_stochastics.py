@@ -5,6 +5,9 @@ def RemoveStochastics(table, share): # share indicated how much of a time periou
     for event_num in range(len(table)):
         times[event_num] = table[event_num][0]
 
+    if len(table) == 0:
+        raise ValueError("One of the event tables is empty")
+
     times.sort()
     cutout_time = times[math.floor(len(times) * share)]
 
