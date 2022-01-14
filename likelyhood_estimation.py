@@ -20,7 +20,7 @@ logging.captureWarnings(True)
 
 class LikelyhoodEstimationDismembered:
     def __init__(self, event_table_funct=None, event_table_neutral=None, number_of_brackets=None, remove_stochastics=False, cutoff_for_stochastics=0.3):
-        # here we have not tree, but tables
+        # here we do not have tree, but do have tables
 
         def TakeEventTime(event):
             return event[0]
@@ -310,7 +310,7 @@ class LikelyhoodEstimationDismembered:
 
         return p
 
-    def ComuteConfidenceIntervals(self, optimal_parameter, p):
+    def ComputeConfidenceIntervals(self, optimal_parameter, p):
         min_border = optimal_parameter
         max_border = optimal_parameter
         while (self.ConductLikelyhoodRatioTest(optimal_parameter, min_border) < p):

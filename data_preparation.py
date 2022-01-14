@@ -1,6 +1,6 @@
 import subprocess
 
-mut1, mut2 = "C452A", "C452A"
+mut1, mut2 = "C501T", "C501T"
 
 # These lines generate nesssesary data
 # First line creates a pb file of needed subtree with two mutations

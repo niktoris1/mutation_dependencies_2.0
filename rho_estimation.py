@@ -18,6 +18,6 @@ LLH_observed = optimum.fun
 LED.PlotLLH(precision=20)
 print("Rho equals:", rho)
 
-LED.ComuteConfidenceIntervals(rho, 0.05)
+LED.ComputeConfidenceIntervals(rho, 0.05)
 #os.system('say "your program has finished"')
 
