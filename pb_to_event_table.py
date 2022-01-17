@@ -6,6 +6,7 @@ import ciso8601
 import time
 
 from tree_class_tree_to_binary import tree_to_binary
+from data_preparation import neutral_forward_mut, funct_forward_mut
 
 import datetime
 
@@ -29,7 +30,6 @@ class Node:
         self.type = type
 
 nodes_with_data = []
-neutral_forward_mut, funct_forward_mut = 'C501T', 'C452A'
 
 # backward muts have the same number, but the origin and mutated nucleotyde swap places
 neutral_backward_mut = neutral_forward_mut[-1] + neutral_forward_mut[1:-1]+neutral_forward_mut[0]
