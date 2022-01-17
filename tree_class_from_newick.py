@@ -1,7 +1,7 @@
 from treelib import Tree
 import re
 
-def MakeTreeClassTree(file_name):
+def MakeTreeClassTree(newick_file_name, name_muts_dict = None, name_type_dict = None, name_time_dict = None):
     def parse(newick):
         tokens = re.finditer(r"([^:;,()\s]*)(?:\s*:\s*([\d.]+)\s*)?([,);])|(\S)", newick + ";")
 
@@ -20,7 +20,7 @@ def MakeTreeClassTree(file_name):
 
         return recurse()[0]
 
-    file = open(file_name, "r")
+    file = open(newick_file_name, "r")
     text_newick = file.read()
     raw_nodes = parse(text_newick)
 
@@ -35,14 +35,14 @@ def MakeTreeClassTree(file_name):
         for child_node in node["children"]:
             add_children(some_tree, child_node)
 
-    print('Started tree building')
     tree_class_tree = Tree()
 
-    tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"]) # we build a tree from newick here
+    tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"], data = []) # we build a tree from newick here
     for children_node in raw_nodes["children"]:
         add_children(tree_class_tree, children_node)
 
-    print('Ended tree building')
+    #for node in tree_class_tree.all_nodes():
+    #    tree_class_tree.data = [name_muts_dict[node["name"]], name_type_dict[node["name"]], name_time_dict[node["name"]]]
 
     return tree_class_tree
 
