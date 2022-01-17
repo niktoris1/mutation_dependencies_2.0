@@ -3,27 +3,21 @@ import csv
 from data_preparation import neutral_forward_mut, funct_forward_mut
 
 
-class Node:
-    def __init__(self, node_id, mutations, time, type):
-        self.node_id = node_id
-        self.mutations = mutations
-        self.time = time
-        self.type = type
-
-
 # backward muts have the same number, but the origin and mutated nucleotyde swap places
 neutral_backward_mut = neutral_forward_mut[-1] + neutral_forward_mut[1:-1]+neutral_forward_mut[0]
 funct_backward_mut = funct_forward_mut[-1] + funct_forward_mut[1:-1]+funct_forward_mut[0]
 muts_list = [neutral_forward_mut, neutral_backward_mut, funct_forward_mut, funct_backward_mut]
 
-file = open("/Users/LAB-SCG-125/Documents/Fitness_data/sample_paths.txt", "r")
+dict_name_muts = {}
+dict_name_types = {}
+dict_name_times = {}
 
-nodes_with_data = []
+file = open("/Users/LAB-SCG-125/Documents/Fitness_data/sample_paths.txt", "r")
 
 for line in file:
     word_list = re.split(': |,|\n', line)
-    node_id = word_list[0]
-    node_id = re.split('\|', node_id)[0]
+    node_name = word_list[0]
+    node_name = re.split('\|', node_name)[0]
     node_muts = word_list[1:-1]
 
     chosen_muts = []
@@ -32,10 +26,12 @@ for line in file:
         if mut in muts_list:
             chosen_muts.append(mut)
 
-    if node_id[0:3] == 'EPI':
-        nodes_with_data.append(Node(node_id, chosen_muts, 'Unknown', 'Sample'))
+    dict_name_muts.update({node_name: chosen_muts})
+
+    if node_name[0:3] == 'EPI':
+        dict_name_types.update({node_name: 'Sample'})
     else:
-        nodes_with_data.append(Node(node_id, chosen_muts, 'Unknown', 'Coalescence'))
+        dict_name_types.update({node_name: 'Coalescence'})
 
 file.close()
 
@@ -43,12 +39,8 @@ file = open("/Users/LAB-SCG-125/Documents/Fitness_data/chron_dates_out.tsv", "r"
 
 read_tsv = csv.reader(file, delimiter="\t")
 
-dict_nodes_times = {}
-
-for line in read_tsv: # TODO - it works for long
-    dict_nodes_times.update({line[0]: line [1]}) # adds a new node-time pair
-
-for node in nodes_with_data:
-    node.time = dict_nodes_times[node.node_id]
+for line in read_tsv:
+    dict_name_times.update({line[0]: line [1]}) # adds a new node-time pair
+file.close()
 
 

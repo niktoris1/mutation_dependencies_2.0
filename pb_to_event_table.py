@@ -6,22 +6,26 @@ import ciso8601
 import time
 
 from tree_class_tree_to_binary import tree_to_binary
-from data_processing import nodes_with_data, dict_nodes_times
 from data_preparation import neutral_forward_mut, funct_forward_mut
 from data_processing import neutral_backward_mut, funct_backward_mut
+from data_processing import dict_name_muts, dict_name_times, dict_name_types
 
 import datetime
-
-
 
 tree_class_tree = MakeTreeClassTree("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.nwk")
 
 print('Tree class tree is built')
 
-for node_with_data in nodes_with_data: # This slows everything down, it is quadratical
-    for node_in_tree in tree_class_tree.all_nodes():
-        if node_with_data.node_id == node_in_tree.tag:
-            node_in_tree.data = node_with_data
+class NodeData:
+    def __init__(self, mutations, time, type):
+        self.mutations = mutations
+        self.time = time
+        self.type = type
+
+ # This slows everything down, it is quadratical
+for node_in_tree in tree_class_tree.all_nodes():
+    if node_in_tree.tag in dict_name_muts.keys():
+        node_in_tree.data = NodeData(dict_name_muts[node_in_tree.tag], dict_name_times[node_in_tree.tag], dict_name_types[node_in_tree.tag])
 print("Data added on node")
 
 tree_class_tree = tree_to_binary(tree_class_tree)
@@ -73,7 +77,7 @@ def TreeClassTreeTableToShishkinTreeTable(tree_table):
             if node.data != None:
                 time = node.data.time
             else:
-                time = dict_nodes_times[node_name]
+                time = dict_name_times[node_name]
             time = RussTimeToNumber(time)
             if node.data == None:
                 is_sample = 1
