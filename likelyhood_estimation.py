@@ -36,6 +36,7 @@ class LikelyhoodEstimationDismembered:
 
         SetRoots(event_table_neutral)
         SetRoots(event_table_funct)
+        print("Roots are set")
 
         all_events = []
         all_neutral_events = []
@@ -48,10 +49,12 @@ class LikelyhoodEstimationDismembered:
             for event in event_table:
                 all_funct_events.append(event)
                 all_events.append(event)
+        print("Events are written in tables")
 
         all_events.sort(key=TakeEventTime)
         all_funct_events.sort(key=TakeEventTime)
         all_neutral_events.sort(key=TakeEventTime)
+        print("Tables sorted")
 
         min_time = sys.maxsize
         max_time = -sys.maxsize
@@ -67,6 +70,7 @@ class LikelyhoodEstimationDismembered:
 
         min_time, max_time = UpdateTimes(event_table_neutral, min_time, max_time)
         min_time, max_time = UpdateTimes(event_table_funct, min_time, max_time)
+        print("Times updated")
 
         timestamps = [_ for _ in np.linspace(min_time, max_time, number_of_brackets + 1, endpoint=True)]
         self.number_of_brackets = number_of_brackets
@@ -97,6 +101,7 @@ class LikelyhoodEstimationDismembered:
 
         SetLineages(all_funct_events)
         SetLineages(all_neutral_events)
+        print("Lineages set")
 
         def CheckNegativity(event_table):
             for event in event_table:
@@ -105,13 +110,18 @@ class LikelyhoodEstimationDismembered:
 
         CheckNegativity(all_neutral_events)
         CheckNegativity(all_funct_events)
+        print("Negativity checked")
 
         MakeHist(TimesFromEvents(all_funct_events, 0), 20)
         MakeHist(TimesFromEvents(all_funct_events, 1), 20)
+        print("Histograms added")
 
         if remove_stochastics:
             RemoveStochastics(all_neutral_events, cutoff_for_stochastics)
             RemoveStochastics(all_funct_events, cutoff_for_stochastics)
+            print("Stochastics removed")
+        else:
+            print("No stochastics removal")
 
         def MapTimeToBracket(time, brackets, bracket_start_num, bracket_finish_num):
             test_bracket_num = (bracket_start_num + bracket_finish_num) // 2
@@ -139,12 +149,16 @@ class LikelyhoodEstimationDismembered:
         PutEventsOnBrackets(all_neutral_events, brackets_borders, self.bracket_data_neutral)
         PutEventsOnBrackets(all_funct_events, brackets_borders, self.bracket_data_funct)
 
+        print("Data put into brackets")
+
         def SortEventsInBracketedData(bracket_data):
             for bracket in bracket_data:
                 bracket.sort(key=TakeEventTime)
 
         SortEventsInBracketedData(self.bracket_data_neutral)
         SortEventsInBracketedData(self.bracket_data_funct)
+
+        print("Data sorted in brackets")
 
         # we do a preprocessing of values for LLH
         # LLH = -coal_rate*coal_rate_multiplier + sum_of_logs

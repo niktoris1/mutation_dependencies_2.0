@@ -1,6 +1,6 @@
 import subprocess
 
-neutral_forward_mut, funct_forward_mut = "C501T", "C452A"
+neutral_forward_mut, funct_forward_mut = "C241T", "C241T"
 
 # These lines generate nesssesary data
 # First line creates a pb file of needed subtree with two mutations

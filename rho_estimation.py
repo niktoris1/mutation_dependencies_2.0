@@ -12,12 +12,12 @@ LED = LikelyhoodEstimationDismembered(event_table_funct=shishkin_funct_table,
                                       remove_stochastics=True,
                                       cutoff_for_stochastics=0.0)
 
-optimum = LED.OptimiseLLH()
-rho = optimum.x
-LLH_observed = optimum.fun
-LED.PlotLLH(precision=20)
-print("Rho equals:", rho)
+#optimum = LED.OptimiseLLH()
+#rho = optimum.x
+#LLH_observed = optimum.fun
+#LED.PlotLLH(precision=20)
+#print("Rho equals:", rho)
 
-LED.ComputeConfidenceIntervals(rho, 0.05)
+#LED.ComputeConfidenceIntervals(rho, 0.05)
 #os.system('say "your program has finished"')
 

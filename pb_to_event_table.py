@@ -77,6 +77,7 @@ for node_with_data in nodes_with_data:
             node_in_tree.data = node_with_data
 
 tree_class_tree = tree_to_binary(tree_class_tree)
+print("Tree transformed to binary")
 
 def DFS(tree_class_tree, start_node, forward_mutation, backward_mutation, table):
     if start_node.data == None or not (backward_mutation in start_node.data.mutations):
@@ -103,6 +104,8 @@ for node in tree_class_tree.all_nodes():
             new_funct_subtable = []
             DFS(tree_class_tree, node, funct_forward_mut, funct_backward_mut, new_funct_subtable)
             funct_trees_table.append(new_funct_subtable)
+
+print("Binary tree transformed into tree table")
 
 # here we put dates on other nodes
 
@@ -137,7 +140,7 @@ def TreeClassTreeTableToShishkinTreeTable(tree_table):
 
             shishkin_tree_subtable.append([time, is_sample, is_coal, 'Unknown_lineages', 'Unknown if root'])
         shishkin_tree_table.append(shishkin_tree_subtable)
-
+    print("Tree transformed into Shishkin class table")
     return shishkin_tree_table
 
 shishkin_neutral_table = TreeClassTreeTableToShishkinTreeTable(neutral_trees_table)

@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import random
 
 def MakeHist(data_array, frequency):
     if len(data_array) == 0:
@@ -6,6 +7,7 @@ def MakeHist(data_array, frequency):
     data_min = min(data_array)
     data_max = max(data_array)
     bin_borders = [data_min + i * (data_max - data_min) / frequency for i in range(frequency+1)]
+    y = [random.random() for _ in range(len(data_array))]
     plt.hist(x=data_array, bins=bin_borders, alpha=0.7, rwidth=0.85)
     plt.show()
 
