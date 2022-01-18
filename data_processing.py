@@ -41,6 +41,8 @@ read_tsv = csv.reader(file, delimiter="\t")
 
 for line in read_tsv:
     dict_name_times.update({line[0]: line [1]}) # adds a new node-time pair
+dict_name_times.pop('strain')
+
 file.close()
 
 

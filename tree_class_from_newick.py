@@ -1,7 +1,9 @@
 from treelib import Tree
 import re
+import logging # a workaround to kill warnings
+logging.captureWarnings(True)
 
-def MakeTreeClassTree(newick_file_name, name_muts_dict = None, name_type_dict = None, name_time_dict = None):
+def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times = None, dict_name_types = None):
     def parse(newick):
         tokens = re.finditer(r"([^:;,()\s]*)(?:\s*:\s*([\d.]+)\s*)?([,);])|(\S)", newick + ";")
 
@@ -28,21 +30,34 @@ def MakeTreeClassTree(newick_file_name, name_muts_dict = None, name_type_dict = 
 
     def add_children(some_tree, node): #adds all children to the tree by checking all parent ids
         if node["parentid"] is not None:
-            some_tree.create_node(node["name"], node["id"], parent=node["parentid"])
+            node_name = re.split('\|', node["name"])[0]
+            some_tree.create_node(node_name, node["id"], parent=node["parentid"],
+                                  data=NodeWithData(dict_name_muts[node_name],
+                                                    dict_name_times[node_name],
+                                                    dict_name_types[node_name]))
         else:
-            some_tree.create_node(node["name"], node["id"])
-        name_id_dict[node["name"]] = node["id"]
+            raise ValueError("The head vertex supposed to be added manually")
+        name_id_dict[node_name] = node["id"]
         for child_node in node["children"]:
             add_children(some_tree, child_node)
 
-    tree_class_tree = Tree()
+    class NodeWithData:
+        def __init__(self, mutation, time, type):
+            self.mutation = mutation
+            self.time = time
+            self.type = type
 
-    tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"], data = []) # we build a tree from newick here
+    # we build a tree from newick here
+
+    tree_class_tree = Tree()
+    node_name = re.split('\|', raw_nodes["name"])[0]
+    tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"],
+                                data = NodeWithData(dict_name_muts[node_name],
+                                                    dict_name_times[node_name],
+                                                    dict_name_types[node_name]))
+
     for children_node in raw_nodes["children"]:
         add_children(tree_class_tree, children_node)
-
-    #for node in tree_class_tree.all_nodes():
-    #    tree_class_tree.data = [name_muts_dict[node["name"]], name_type_dict[node["name"]], name_time_dict[node["name"]]]
 
     return tree_class_tree
 

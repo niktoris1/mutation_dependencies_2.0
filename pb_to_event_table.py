@@ -12,8 +12,9 @@ from data_processing import dict_name_muts, dict_name_times, dict_name_types
 
 import datetime
 
-tree_class_tree = MakeTreeClassTree("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.nwk")
-
+tree_class_tree = MakeTreeClassTree("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.nwk",
+                                    dict_name_muts=dict_name_muts, dict_name_times=dict_name_times, dict_name_types=dict_name_types)
+tree_class_tree.show()
 print('Tree class tree is built')
 
 class NodeData:

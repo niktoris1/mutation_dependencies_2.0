@@ -274,7 +274,7 @@ def GetEventsFromTree(tree_list):
 
     return es
 
-def GetStartAndFinishtTimeFromTrees(trees):
+def GetStartAndFinishTimeFromTrees(trees):
     start_time = 999
     finish_time = -1
     for tree in trees:
