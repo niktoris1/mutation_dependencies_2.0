@@ -3,7 +3,8 @@ import re
 import logging # a workaround to kill warnings
 logging.captureWarnings(True)
 
-def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times = None, dict_name_types = None):
+def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times = None, dict_name_types = None, data_type = 0):
+    # data_type = 0 if it is real and 1 if it is simulated
     def parse(newick):
         tokens = re.finditer(r"([^:;,()\s]*)(?:\s*:\s*([\d.]+)\s*)?([,);])|(\S)", newick + ";")
 
@@ -42,8 +43,8 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
             add_children(some_tree, child_node)
 
     class NodeWithData:
-        def __init__(self, mutation, time, type):
-            self.mutation = mutation
+        def __init__(self, mutations, time, type):
+            self.mutations = mutations
             self.time = time
             self.type = type
 

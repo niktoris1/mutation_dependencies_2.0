@@ -6,14 +6,13 @@ import ciso8601
 import time
 
 from tree_class_tree_to_binary import tree_to_binary
-from data_preparation import neutral_forward_mut, funct_forward_mut
-from data_processing import neutral_backward_mut, funct_backward_mut
-from data_processing import dict_name_muts, dict_name_times, dict_name_types
+from data_preparation_real import neutral_forward_mut, funct_forward_mut
+from data_processing_real import neutral_backward_mut, funct_backward_mut
+from data_processing_real import dict_name_muts, dict_name_times, dict_name_types
 
 import datetime
 
-tree_class_tree = MakeTreeClassTree("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.nwk",
-                                    dict_name_muts=dict_name_muts, dict_name_times=dict_name_times, dict_name_types=dict_name_types)
+tree_class_tree = MakeTreeClassTree("/Users/LAB-SCG-125/Documents/Fitness_data/samples_with_at_least_one_mutation.nwk", dict_name_muts, dict_name_times, dict_name_types)
 tree_class_tree.show()
 print('Tree class tree is built')
 
@@ -23,11 +22,6 @@ class NodeData:
         self.time = time
         self.type = type
 
- # This slows everything down, it is quadratical
-for node_in_tree in tree_class_tree.all_nodes():
-    if node_in_tree.tag in dict_name_muts.keys():
-        node_in_tree.data = NodeData(dict_name_muts[node_in_tree.tag], dict_name_times[node_in_tree.tag], dict_name_types[node_in_tree.tag])
-print("Data added on node")
 
 tree_class_tree = tree_to_binary(tree_class_tree)
 print("Tree transformed to binary")

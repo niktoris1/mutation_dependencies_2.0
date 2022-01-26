@@ -1,6 +1,6 @@
 import re
 import csv
-from data_preparation import neutral_forward_mut, funct_forward_mut
+from data_preparation_real import neutral_forward_mut, funct_forward_mut
 
 
 # backward muts have the same number, but the origin and mutated nucleotyde swap places
