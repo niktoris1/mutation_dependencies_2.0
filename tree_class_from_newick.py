@@ -27,7 +27,25 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
     text_newick = file.read()
     raw_nodes = parse(text_newick)
 
-    name_id_dict = {} # dictionary in type id: name
+    if data_type == 1:
+        dict_name_times = {}
+        dict_name_types = {}
+
+        def DFS(node_dict, current_time):
+            new_time = node_dict['length'] + current_time
+            id = str(node_dict['id'])
+            dict_name_times.update({id:new_time})
+            if len(node_dict['children']) == 0:
+                dict_name_types.update({id:'Sample'})
+            else:
+                dict_name_types.update({id:'Coalescence'})
+
+            for child in node_dict['children']:
+                DFS(child, new_time)
+
+        DFS(raw_nodes, 0)
+
+
 
     def add_children(some_tree, node): #adds all children to the tree by checking all parent ids
         if node["parentid"] is not None:
@@ -38,7 +56,6 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
                                                     dict_name_types[node_name]))
         else:
             raise ValueError("The head vertex supposed to be added manually")
-        name_id_dict[node_name] = node["id"]
         for child_node in node["children"]:
             add_children(some_tree, child_node)
 
@@ -53,9 +70,9 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
     tree_class_tree = Tree()
     node_name = re.split('\|', raw_nodes["name"])[0]
     tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"],
-                                data = NodeWithData(dict_name_muts[node_name],
-                                                    dict_name_times[node_name],
-                                                    dict_name_types[node_name]))
+                                data = NodeWithData(dict_name_muts[str(node_name)],
+                                                    dict_name_times[str(node_name)],
+                                                    dict_name_types[str(node_name)]))
 
     for children_node in raw_nodes["children"]:
         add_children(tree_class_tree, children_node)

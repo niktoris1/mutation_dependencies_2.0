@@ -274,7 +274,8 @@ class LikelyhoodEstimationDismembered:
 
         for timestamp_num in range(self.number_of_brackets):
             if (self.numbers_of_coals_neutral[timestamp_num] + self.numbers_of_coals_funct[timestamp_num] == 0) \
-                or (self.numbers_of_samples_funct[timestamp_num] == 0):
+                or (self.numbers_of_samples_funct[timestamp_num] == 0) or \
+                (c1s[timestamp_num] + c3s[timestamp_num] * self.estimated_infected_ratio[timestamp_num] * rho == 0):
                 LLHOptimumResultsNoConstantTerm[timestamp_num] = 0
                 # since we don't know enough, it doesn't influence the LLH
             else:
