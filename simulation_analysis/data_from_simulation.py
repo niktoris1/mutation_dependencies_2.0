@@ -4,7 +4,6 @@ import re
 
 newick_file_name = "example_tree.nwk"
 
-
 dict_name_muts = {}
 dict_name_times = {}
 dict_name_types = {}
@@ -31,8 +30,31 @@ for node in tree_class_tree.all_nodes():
         samples_for_usher.append(node)
 
 samples_for_usher_to_csv = []
+sample_list = []
+mut_list = []
+
+muts_to_samples = {}
+muts_to_01_arrs = {}
+
 for sample in samples_for_usher:
-    pass
+    sample_list.append(sample.tag)
+    for mut in sample.data.mutations:
+        if not (mut in mut_list):
+            mut_list.append(mut)
+        if mut in muts_to_samples:
+            muts_to_samples[mut].append(sample.tag)
+        else:
+            muts_to_samples.update({mut:[sample.tag]})
+
+for mut in mut_list:
+    muts_to_01_arrs.update({mut:[0 for _ in range(len(sample_list))]})
+
+for sample_num in range(len(sample_list)):
+    sample = sample_list[sample_num]
+    for mut in muts_to_samples:
+        if sample in muts_to_samples[mut]:
+            muts_to_01_arrs[mut][sample_num] = 1
+
 
 f = open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test.csv', 'w', newline='')
 
