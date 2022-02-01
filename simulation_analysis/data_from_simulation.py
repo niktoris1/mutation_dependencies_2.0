@@ -56,10 +56,14 @@ for sample_num in range(len(sample_list)):
             muts_to_01_arrs[mut][sample_num] = 1
 
 
-f = open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test.csv', 'w', newline='')
+f = open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv', 'w', newline='')
 
 writer = csv.writer(f)
-writer.writerow(['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'])
+writer.writerow(['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + sample_list)
+for mut_name in muts_to_01_arrs:
+    mut_pos = mut_name[1:-1]
+    writer.writerow(['some_chrom', mut_pos, mut_name, mut_name[0], mut_name[-1], '.', 'PASS', 'some_info', 'GT:CLADE'] + muts_to_01_arrs[mut])
+
 
 f.close()
 
