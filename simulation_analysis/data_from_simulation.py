@@ -3,6 +3,7 @@ import csv
 import re
 import pysam
 from pysam import VariantFile
+import subprocess
 
 
 newick_file_name = "example_tree.nwk"
@@ -58,21 +59,33 @@ for sample_num in range(len(sample_list)):
         if sample in muts_to_samples[mut]:
             muts_to_01_arrs[mut][sample_num] = 1
 
-vcf_example = VariantFile('/Users/LAB-SCG-125/Documents/Fitness_data/test/global_samples.vcf')
-vcf_out = VariantFile('-', 'w', header=vcf_example.header)
 
-for rec in vcf_example.fetch():
-    vcf_out.write(rec)
-
-#f = open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv', 'w', newline='')
-
-#writer = csv.writer(f)
-#writer.writerow(['CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + sample_list)
-#for mut_name in muts_to_01_arrs:
-#    mut_pos = mut_name[1:-1]
-#    writer.writerow(['some_chrom', mut_pos, mut_name, mut_name[0], mut_name[-1], '.', 'PASS', 'some_info', 'GT:CLADE'] + muts_to_01_arrs[mut])
+with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/header', 'w+') as header_file:
+    header_file.write("##fileformat=VCFv4.3\n")
+    header_file.write("##FILTER=<ID=PASS,Description=\"All filters passed\">\n")
+    header_file.write("##source=nextstrain.org\n")
 
 
-#f.close()
+with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv', 'w', newline='') as f:
+
+    writer = csv.writer(f, delimiter = '\t')
+    writer.writerow(['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + sample_list)
+    for mut_name in muts_to_01_arrs:
+        mut_pos = mut_name[1:-1]
+        writer.writerow(['NC_045512v2', mut_pos, mut_name, mut_name[0], mut_name[-1], '.', 'PASS', '.', 'GT:CLADE'] + muts_to_01_arrs[mut])
+
+
+subprocess.run(["awk", "\"{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1\"",
+                "test_new_samples.csv", "|", "tr", "\"", "\"", "\"\t\"", ">", "test_new_samples1.csv"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+#subprocess.run(["awk", "\"{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1\" test_new_samples.csv | tr \" \" \"\t\" > test_new_samples1.csv"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+
+# awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub("0","0/0",$x); gsub("1","0/1",$x)}}}1' test_new_samples.csv | tr ' ' '\t' > test_new_samples1.csv
+
+
+subprocess.run(["cat", "header", "test_new_samples1.csv", ">", "test_new_samples.vcf"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+#cat header test_new_samples1.csv > test_new_samples.vcf
+
+subprocess.run(["usher", "-i", "global_assignments.pb", "-v", "test_new_samples.vcf", "-u", "-d", "output/"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+#usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/
 
 #tree_class_tree.show()
