@@ -74,18 +74,20 @@ with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv',
         mut_pos = mut_name[1:-1]
         writer.writerow(['NC_045512v2', mut_pos, mut_name, mut_name[0], mut_name[-1], '.', 'PASS', '.', 'GT:CLADE'] + muts_to_01_arrs[mut])
 
+command = "awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"
 
-subprocess.run(["awk", "\"{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1\"",
-                "test_new_samples.csv", "|", "tr", "\"", "\"", "\"\t\"", ">", "test_new_samples1.csv"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
-#subprocess.run(["awk", "\"{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1\" test_new_samples.csv | tr \" \" \"\t\" > test_new_samples1.csv"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+subprocess.call(["awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"], shell = True,
+               cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+# awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub("0","0/0",$x); gsub("1","0/1",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv
 
-# awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub("0","0/0",$x); gsub("1","0/1",$x)}}}1' test_new_samples.csv | tr ' ' '\t' > test_new_samples1.csv
+command = "cat header test_new_samples1.csv > test_new_samples.vcf"
 
-
-subprocess.run(["cat", "header", "test_new_samples1.csv", ">", "test_new_samples.vcf"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+subprocess.call([command], shell=True, cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
 #cat header test_new_samples1.csv > test_new_samples.vcf
 
-subprocess.run(["usher", "-i", "global_assignments.pb", "-v", "test_new_samples.vcf", "-u", "-d", "output/"], cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+command = "usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/"
+
+subprocess.call([command], shell=True, cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
 #usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/
 
 #tree_class_tree.show()
