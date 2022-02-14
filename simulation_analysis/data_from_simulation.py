@@ -59,14 +59,15 @@ for sample_num in range(len(sample_list)):
         if sample in muts_to_samples[mut]:
             muts_to_01_arrs[mut][sample_num] = 1
 
+filepath = '/Users/LAB-SCG-125/Documents/Fitness_data/test/'
 
-with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/header', 'w+') as header_file:
+with open(filepath + 'header', 'w+') as header_file:
     header_file.write("##fileformat=VCFv4.3\n")
     header_file.write("##FILTER=<ID=PASS,Description=\"All filters passed\">\n")
     header_file.write("##source=nextstrain.org\n")
 
 
-with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv', 'w', newline='') as f:
+with open(filepath+'test_new_samples.csv', 'w', newline='') as f:
 
     writer = csv.writer(f, delimiter = '\t')
     writer.writerow(['#CHROM', 'POS', 'ID', 'REF', 'ALT', 'QUAL', 'FILTER', 'INFO', 'FORMAT'] + sample_list)
@@ -77,17 +78,17 @@ with open('/Users/LAB-SCG-125/Documents/Fitness_data/test/test_new_samples.csv',
 command = "awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"
 
 subprocess.call(["awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"], shell = True,
-               cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+               cwd=filepath)
 # awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub("0","0/0",$x); gsub("1","0/1",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv
 
 command = "cat header test_new_samples1.csv > test_new_samples.vcf"
 
-subprocess.call([command], shell=True, cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+subprocess.call([command], shell=True, cwd=filepath)
 #cat header test_new_samples1.csv > test_new_samples.vcf
 
 command = "usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/"
 
-subprocess.call([command], shell=True, cwd="/Users/LAB-SCG-125/Documents/Fitness_data/test/")
+subprocess.call([command], shell=True, cwd=filepath)
 #usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/
 
 #tree_class_tree.show()
