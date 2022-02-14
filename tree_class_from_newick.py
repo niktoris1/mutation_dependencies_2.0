@@ -3,8 +3,8 @@ import re
 import logging # a workaround to kill warnings
 logging.captureWarnings(True)
 
-def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times = None, dict_name_types = None, data_type = 0):
-    # data_type = 0 if it is real and 1 if it is simulated
+def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times = None, dict_name_types = None, extrenal_dicts_exist = 0):
+    # extrenal_dicts_exist = 0 if there are external dicts with time and type
     def parse(newick):
         tokens = re.finditer(r"([^:;,()\s]*)(?:\s*:\s*([\d.]+)\s*)?([,);])|(\S)", newick + ";")
 
@@ -27,18 +27,20 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
     text_newick = file.read()
     raw_nodes = parse(text_newick)
 
-    if data_type == 1:
+    if extrenal_dicts_exist == 0:
+        dict_name_muts = {} # we know of no muts in this case
         dict_name_times = {}
         dict_name_types = {}
 
         def DFS(node_dict, current_time):
             new_time = node_dict['length'] + current_time
-            id = str(node_dict['id'])
-            dict_name_times.update({id:new_time})
+            name = re.split('\|', str(node_dict['name']))[0]
+            dict_name_times.update({name: new_time})
+            dict_name_muts.update({name: []})
             if len(node_dict['children']) == 0:
-                dict_name_types.update({id:'Sample'})
+                dict_name_types.update({name: 'Sample'})
             else:
-                dict_name_types.update({id:'Coalescence'})
+                dict_name_types.update({name: 'Coalescence'})
 
             for child in node_dict['children']:
                 DFS(child, new_time)
@@ -70,7 +72,7 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
     tree_class_tree = Tree()
     node_name = re.split('\|', raw_nodes["name"])[0]
     tree_class_tree.create_node(raw_nodes["name"], raw_nodes["id"],
-                                data = NodeWithData(dict_name_muts[str(node_name)],
+                                data= NodeWithData(dict_name_muts[str(node_name)],
                                                     dict_name_times[str(node_name)],
                                                     dict_name_types[str(node_name)]))
 

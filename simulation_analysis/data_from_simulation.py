@@ -1,8 +1,6 @@
 from tree_class_from_newick import MakeTreeClassTree
 import csv
 import re
-import pysam
-from pysam import VariantFile
 import subprocess
 
 
@@ -76,18 +74,15 @@ with open(filepath+'test_new_samples.csv', 'w', newline='') as f:
         writer.writerow(['NC_045512v2', mut_pos, mut_name, mut_name[0], mut_name[-1], '.', 'PASS', '.', 'GT:CLADE'] + muts_to_01_arrs[mut])
 
 command = "awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"
-
 subprocess.call(["awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub(\"0\",\"0/0\",$x); gsub(\"1\",\"0/1\",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv"], shell = True,
                cwd=filepath)
 # awk '{if (NR!=1){for(x=10;x<=NF;x++){gsub("0","0/0",$x); gsub("1","0/1",$x)}}}1' test_new_samples.csv  > test_new_samples1.csv
 
 command = "cat header test_new_samples1.csv > test_new_samples.vcf"
-
 subprocess.call([command], shell=True, cwd=filepath)
 #cat header test_new_samples1.csv > test_new_samples.vcf
 
 command = "usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/"
-
 subprocess.call([command], shell=True, cwd=filepath)
 #usher -i global_assignments.pb -v test_new_samples.vcf -u -d output/
 
