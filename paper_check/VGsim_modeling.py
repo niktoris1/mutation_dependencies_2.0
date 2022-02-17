@@ -8,7 +8,7 @@ simulator = VGsim.Simulator(number_of_sites, populations_number, number_of_susce
 simulator.set_transmission_rate(0.25)
 simulator.set_recovery_rate(0.099)
 simulator.set_sampling_rate(0.001)
-mutation_rate=0.005
+mutation_rate=0.015
 substitution_weights=[1,1,1,1] #ATCG
 simulator.set_mutation_rate(mutation_rate, substitution_weights)
 #simulator.set_susceptibility_type(0)
@@ -16,7 +16,7 @@ simulator.set_mutation_rate(mutation_rate, substitution_weights)
 simulator.set_susceptibility(1)
 simulator.set_population_size(100000, population=0)
 simulator.set_population_size(100000, population=1)
-simulator.set_migration_probability(0.1)
+simulator.set_migration_probability(0.01)
 
 simulator.simulate(1000000, time=200)
 
