@@ -14,7 +14,7 @@ def GetHist(newick_file_name = None, tree_class_tree = None, label = None):
         if len(node.fpointer) == 0:
             times_list.append(node.data.time)
 
-    plt.hist(times_list, 20, rwidth = 0.9)
+    plt.hist(times_list, 100, rwidth = 0.9)
     plt.xlabel(label)
     plt.show()
 

@@ -32,7 +32,7 @@ def ProcessNewickFile(newick_tree_file): #removes all the E-4 and similar things
 
 
 
-newick_tree_file_from_master = '/Users/LAB-SCG-125/Documents/Master_sim/FinalModel.newick'
+newick_tree_file_from_master = '/Users/LAB-SCG-125/Documents/Master_sim/FinalModelTraj.newick'
 print("Retrieved newick")
 ProcessNewickFile(newick_tree_file_from_master)
 print("Newick file processed")

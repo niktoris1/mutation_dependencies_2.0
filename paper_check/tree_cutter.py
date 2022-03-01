@@ -8,11 +8,13 @@ import random
 def cut_tree(newick_tree_file, probability_of_drop):
     tree = MakeTreeClassTree(newick_tree_file, extrenal_dicts_exist=0)
 
+    overall = 0
     for node in tree.all_nodes():
         if node.is_leaf() == True:
             if random.random() < probability_of_drop:
                 tree.remove_node(node.identifier)
-    print("Leafs dropped")
+                overall = overall + 1
+    print(overall, "leafs dropped")
 
     # we check all nodes on having just one child and terminate while loop if there is no such vertices
     finished = 0
@@ -27,5 +29,5 @@ def cut_tree(newick_tree_file, probability_of_drop):
 
     return tree
 
-cutted_tree_from_master = cut_tree(newick_tree_file_from_master, probability_of_drop=0.0)
+cutted_tree_from_master = cut_tree(newick_tree_file_from_master, probability_of_drop=0.9)
 
