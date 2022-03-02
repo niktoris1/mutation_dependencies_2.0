@@ -1,6 +1,5 @@
 import time
 
-
 def ProcessNewickFile(newick_tree_file): #removes all the E-4 and similar things
     with open(newick_tree_file, "r") as file:
         t1 = time.time()
