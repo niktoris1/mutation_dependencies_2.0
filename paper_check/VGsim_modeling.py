@@ -5,7 +5,7 @@ import pandas as pd
 import VGsim
 import matplotlib.pyplot as plt
 
-for i in range(10):
+for i in range(20):
 
 
     number_of_sites = 1
@@ -45,7 +45,7 @@ for i in range(10):
     simulator.set_population_size(100000, population=1)
     simulator.set_migration_probability(0.001)
 
-    simulator.simulate(1000000, time=500)
+    simulator.simulate(1000000, time=700)
 
     step_num = 500
     timestamps = simulator.get_data_susceptible(population=0, susceptibility_type=0, step_num=step_num)[1]
@@ -67,10 +67,23 @@ for i in range(10):
     R11 = simulator.get_data_susceptible(population=1, susceptibility_type=2, step_num=step_num)[0]
 
     plt.plot(timestamps, S0, color = 'b', linewidth = 0.1)
+    plt.plot(timestamps, R00, color='g', linewidth=0.1)
+    plt.plot(timestamps, R10, color='r', linewidth=0.1)
 
-master_timestamps = pd.read_csv('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/timestamps.csv').values.tolist()
-master_S0 = pd.read_csv('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/S0.csv')
+def csv_to_list(csv_path):
+    master_csv = pd.read_csv(csv_path)
+    output_list = master_csv.values.tolist()
+    output_list = [element[0] for element in output_list]
+    return output_list
+
+
+master_timestamps = csv_to_list('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/timestamps.csv')
+master_S0 = csv_to_list('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/S0.csv')
+master_R00 = csv_to_list('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/R00.csv')
+master_R10 = csv_to_list('/Users/LAB-SCG-125/PycharmProjects/mutation_dependencies_2.0/paper_check/master_plots/R10.csv')
 plt.plot(master_timestamps, master_S0, color = 'b', linewidth = 1)
+plt.plot(master_timestamps, master_R00, color = 'g', linewidth = 1)
+plt.plot(master_timestamps, master_R10, color = 'r', linewidth = 1)
 
 plt.show()
 #simulator.debug()
