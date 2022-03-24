@@ -1,6 +1,7 @@
 import random
 import sys
-from csv_to_list import  csv_to_list
+from csv_to_list import csv_to_list
+
 import VGsim
 import matplotlib.pyplot as plt
 
@@ -8,17 +9,17 @@ fig, axs = plt.subplots(nrows=2, ncols=2, sharex = True, sharey = True)
 fig.suptitle('Theoretical and practical trajectories')
 
 
-for i in range(20):
+for i in range(1):
     number_of_sites = 1
     populations_number = 2
     number_of_susceptible_groups = 3
     simulator = VGsim.Simulator(number_of_sites, populations_number, number_of_susceptible_groups,
-                                seed=random.randint(0, sys.maxsize))
+                                seed=4427263677822381983)
 
     simulator.set_transmission_rate(0.25)
     simulator.set_transmission_rate(0.4, haplotype="G")
 
-    mutation_rate = 0.003
+    mutation_rate = 0.3
     substitution_weights = [1, 1, 1, 1]  # ATCG
     simulator.set_mutation_rate(mutation_rate, substitution_weights)
 
@@ -45,24 +46,24 @@ for i in range(20):
     simulator.set_population_size(100000, population=1)
     simulator.set_migration_probability(0.1)
 
-    simulator.simulate(1000000, time=700)
+    simulator.simulate(2000000, time=1000)
 
     step_num = 500
     timestamps = simulator.get_data_susceptible(population=0, susceptibility_type=0, step_num=step_num)[1]
 
     S0 = simulator.get_data_susceptible(population=0, susceptibility_type=0, step_num=step_num)[0]
-    I00 = simulator.get_data_infectious(population=0, haplotype="A", step_num=step_num)[0]
-    I10 = simulator.get_data_infectious(population=0, haplotype="C", step_num=step_num)[0]
-    I20 = simulator.get_data_infectious(population=0, haplotype="T", step_num=step_num)[0]
-    I30 = simulator.get_data_infectious(population=0, haplotype="G", step_num=step_num)[0]
+    I00 = simulator.get_data_infectious(population=0, haplotype=0, step_num=step_num)[0]
+    I10 = simulator.get_data_infectious(population=0, haplotype=1, step_num=step_num)[0]
+    I20 = simulator.get_data_infectious(population=0, haplotype=2, step_num=step_num)[0]
+    I30 = simulator.get_data_infectious(population=0, haplotype=3, step_num=step_num)[0]
     R00 = simulator.get_data_susceptible(population=0, susceptibility_type=1, step_num=step_num)[0]
     R10 = simulator.get_data_susceptible(population=0, susceptibility_type=2, step_num=step_num)[0]
 
     S1 = simulator.get_data_susceptible(population=1, susceptibility_type=0, step_num=step_num)[0]
-    I01 = simulator.get_data_infectious(population=1, haplotype="A", step_num=step_num)[0]
-    I11 = simulator.get_data_infectious(population=1, haplotype="C", step_num=step_num)[0]
-    I21 = simulator.get_data_infectious(population=1, haplotype="T", step_num=step_num)[0]
-    I31 = simulator.get_data_infectious(population=1, haplotype="G", step_num=step_num)[0]
+    I01 = simulator.get_data_infectious(population=1, haplotype=0, step_num=step_num)[0]
+    I11 = simulator.get_data_infectious(population=1, haplotype=1, step_num=step_num)[0]
+    I21 = simulator.get_data_infectious(population=1, haplotype=2, step_num=step_num)[0]
+    I31 = simulator.get_data_infectious(population=1, haplotype=3, step_num=step_num)[0]
     R01 = simulator.get_data_susceptible(population=1, susceptibility_type=1, step_num=step_num)[0]
     R11 = simulator.get_data_susceptible(population=1, susceptibility_type=2, step_num=step_num)[0]
 
