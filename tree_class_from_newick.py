@@ -1,5 +1,6 @@
 from treelib import Tree
 import re
+
 import logging # a workaround to kill warnings
 logging.captureWarnings(True)
 
@@ -11,7 +12,6 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
         def recurse(nextid=0, parentid=-1):  # one node
             thisid = nextid
             children = []
-
             name, length, delim, ch = next(tokens).groups(0)
             if ch == "(":
                 while ch in "(,":
@@ -35,6 +35,9 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
             def DFS(node_dict, current_time):
                 new_time = node_dict['length'] + current_time
                 name = re.split('\|', str(node_dict['name']))[0]
+                if name == '':
+                    name = str(new_time)
+                    node_dict['name'] = name
                 dict_name_times.update({name: new_time})
                 dict_name_muts.update({name: []})
                 if len(node_dict['children']) == 0:
@@ -46,8 +49,6 @@ def MakeTreeClassTree(newick_file_name, dict_name_muts = None, dict_name_times =
                     DFS(child, new_time)
 
             DFS(raw_nodes, 0)
-
-
 
         def add_children(some_tree, node): #adds all children to the tree by checking all parent ids
             if node["parentid"] is not None:
